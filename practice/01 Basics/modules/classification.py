@@ -1,7 +1,9 @@
+from typing import Optional
+
 import numpy as np
 
-from modules.metrics import *
-from modules.utils import z_normalize
+from .metrics import *
+from .utils import z_normalize
 
 
 default_metrics_params = {'euclidean': {'normalize': True},
@@ -20,7 +22,7 @@ class TimeSeriesKNN:
     metric_params: dictionary containing parameters for the distance metric being used
     """
     
-    def __init__(self, n_neighbors: int = 3, metric: str = 'euclidean', metric_params: dict | None = None) -> None:
+    def __init__(self, n_neighbors: int = 3, metric: str = 'euclidean', metric_params: Optional[dict] = None) -> None:
 
         self.n_neighbors: int = n_neighbors
         self.metric: str = metric
@@ -29,7 +31,7 @@ class TimeSeriesKNN:
             self.metric_params.update(metric_params)
 
 
-    def fit(self, X_train: np.ndarray, Y_train: np.ndarray) -> Self:
+    def fit(self, X_train: np.ndarray, Y_train: np.ndarray):
         """
         Fit the model using X_train as training data and Y_train as labels
 

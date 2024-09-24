@@ -3,7 +3,7 @@ import pandas as pd
 import math
 import cv2
 import imutils
-from google.colab.patches import cv2_imshow
+#from google.colab.patches import cv2_imshow
 
 
 class Image2TimeSeries:
