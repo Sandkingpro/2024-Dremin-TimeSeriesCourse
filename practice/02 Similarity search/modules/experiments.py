@@ -4,9 +4,9 @@ import mass_ts as mts
 import timeit
 from IPython.display import display
 
-from modules.distance_profile import brute_force
-from modules.bestmatch import NaiveBestMatchFinder, UCR_DTW
-from modules.plots import mplot2d
+from .distance_profile import brute_force
+from .bestmatch import NaiveBestMatchFinder, UCR_DTW
+from .plots import mplot2d
 
 
 def _get_param_values(exp_params: dict, param: str) -> list:
@@ -57,13 +57,14 @@ def _run_experiment_dist_profile(algorithm: str, data: dict, exp_params: dict, a
             match algorithm:
                 case 'brute_force':
                     runtime_code = f"brute_force(data['ts']['{n}'], data['query']['{m}'])"
-                case 'mass3': 
-                    runtime_code = f"mts.mass3(data['ts']['{n}'], data['query']['{m}'], alg_params['segment_len'])"
+                case 'mass3':
+                    runtime_code = (f"mts.mass3(data['ts']['{n}'], data['query']['{m}'], alg_params['mass3']["
+                                    f"'segment_len'])")
                 case 'mass' | 'mass2':
                     runtime_code = f"mts.{algorithm}(data['ts']['{n}'], data['query']['{m}'])"    
             try:
                 time = timeit.timeit(stmt=runtime_code, number=1, globals={**globals(), **locals()})
-            except:
+            except Exception as e:
                 time = np.nan
 
             times.append(time)
@@ -166,7 +167,7 @@ def visualize_plot_times(times: np.ndarray, comparison_param: np.ndarray, exp_pa
     trace_titles = comparison_param
     x_axis_title = varying_param_name
     y_axis_title = 'Runtime, s'
-    
+
     mplot2d(np.array(varying_param_value), times, plot_title, x_axis_title, y_axis_title, trace_titles)
 
 

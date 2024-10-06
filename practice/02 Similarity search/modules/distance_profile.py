@@ -1,7 +1,7 @@
 import numpy as np
 
-from modules.utils import z_normalize
-from modules.metrics import ED_distance, norm_ED_distance
+from .utils import z_normalize
+from .metrics import ED_distance, norm_ED_distance
 
 
 def brute_force(ts: np.ndarray, query: np.ndarray, is_normalize: bool = True) -> np.ndarray:
@@ -21,10 +21,19 @@ def brute_force(ts: np.ndarray, query: np.ndarray, is_normalize: bool = True) ->
 
     n = len(ts)
     m = len(query)
-    N = n-m+1
+    N = n - m + 1
 
     dist_profile = np.zeros(shape=(N,))
 
-    # INSERT YOUR CODE
+    if is_normalize:
+        query = (query - np.mean(query)) / np.std(query)
+
+    for i in range(N):
+        subsequence = ts[i:i + m]
+
+        if is_normalize:
+            subsequence = (subsequence - np.mean(subsequence)) / np.std(subsequence)
+
+        dist_profile[i] = ED_distance(subsequence, query)
 
     return dist_profile
