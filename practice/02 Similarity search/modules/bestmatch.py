@@ -2,8 +2,8 @@ import numpy as np
 import math
 import copy
 
-from modules.utils import sliding_window, z_normalize
-from modules.metrics import DTW_distance
+from .utils import sliding_window, z_normalize
+from .metrics import DTW_distance
 
 
 def apply_exclusion_zone(array: np.ndarray, idx: int, excl_zone: int) -> np.ndarray:
@@ -140,21 +140,26 @@ class NaiveBestMatchFinder(BestMatchFinder):
         """
 
         query = copy.deepcopy(query)
-        if (len(ts_data.shape) != 2): # time series set
+        if (len(ts_data.shape) != 2):  # time series set
             ts_data = sliding_window(ts_data, len(query))
 
         N, m = ts_data.shape
+
         excl_zone = self._calculate_excl_zone(m)
 
-        dist_profile = np.ones((N,))*np.inf
+        dist_profile = np.ones((N,)) * np.inf
         bsf = np.inf
 
-        bestmatch = {
-            'index' : [],
-            'distance' : []
-        }
-        
-        # INSERT YOUR CODE
+        for i in range(N):
+            subsequence = ts_data[i, :]
+            distance = DTW_distance(subsequence, query, self.r)
+
+            if distance < bsf:
+                bsf = distance
+                dist_profile[i] = distance
+
+        result = topK_match(dist_profile, excl_zone)
+        bestmatch = {int(idx): float(dist) for idx, dist in zip(result['indices'], result['distances'])}
 
         return bestmatch
 
@@ -269,12 +274,10 @@ class UCR_DTW(BestMatchFinder):
 
         dist_profile = np.ones((N,))*np.inf
         bsf = np.inf
-        
+
         bestmatch = {
             'index' : [],
             'distance' : []
         }
-
-        # INSERT YOUR CODE
 
         return bestmatch
