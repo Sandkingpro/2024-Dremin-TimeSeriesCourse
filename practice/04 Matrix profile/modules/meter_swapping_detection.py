@@ -1,3 +1,5 @@
+from typing import Tuple, Dict, Any
+from .mp import *
 import numpy as np
 import datetime
 
@@ -6,12 +8,11 @@ from plotly.subplots import make_subplots
 from plotly.offline import init_notebook_mode
 import plotly.graph_objs as go
 import plotly.express as px
+
 plotly.offline.init_notebook_mode(connected=True)
 
-from modules.mp import *
 
-
-def heads_tails(consumptions: dict, cutoff, house_idx: list) -> dict, dict:
+def heads_tails(consumptions: dict, cutoff, house_idx: list) -> tuple[dict[str, Any], dict[str, Any]]:
     """
     Split time series into two parts: Head and Tail
 

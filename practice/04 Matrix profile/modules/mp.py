@@ -22,12 +22,14 @@ def compute_mp(ts1: np.ndarray, m: int, exclusion_zone: int = None, ts2: np.ndar
     output: the matrix profile structure
             (matrix profile, matrix profile index, subsequence length, exclusion zone, the first and second time series)
     """
-    
-    # INSERT YOUR CODE
+
+    scrump = stumpy.scrump(ts1.copy(), m, ts2, s=exclusion_zone,ignore_trivial=True)
+    scrump.update()
+    mp = np.array([(p, i) for p, i in zip(scrump.P_, scrump.I_)])
 
     return {'mp': mp[:, 0],
             'mpi': mp[:, 1],
-            'm' : m,
+            'm': m,
             'excl_zone': exclusion_zone,
-            'data': {'ts1' : ts1, 'ts2' : ts2}
+            'data': {'ts1': ts1, 'ts2': ts2}
             }
