@@ -236,4 +236,4 @@ def plot_segmentation(mp: dict, threshold: float) -> None:
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor='rgba(0,0,0,0)', height=700)
 
-    fig.show(renderer="colab")
+    fig.show(renderer="notebook")
